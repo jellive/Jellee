@@ -1,0 +1,24 @@
+{
+    "manifest_version": 2,
+    "name": "Jellee",
+    "version": "1.0.0",
+    "permissions": ["tabs", "activeTab", "storage", "webRequest", "webRequestBlocking", "<all_urls>"],
+    "content_scripts": [{
+        "js": ["contentscript.js"],
+        "css": ["contentscript.css"],
+        "matches": ["<all_urls>"]
+    }],
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": true
+    },
+    "browser_action": {
+        "default_popup": "popup/index.html",
+        "default_title": "Jellee"
+    },
+    "//chrome_url_overrides": {
+        "newtab": "popup/index.html"
+    },
+    "web_accessible_resources": ["assets/*"],
+    "content_security_policy": "script-src 'self' 'unsafe-eval' 'sha256-....'; object-src 'self'"
+}

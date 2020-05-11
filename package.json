@@ -1,0 +1,38 @@
+{
+  "name": "chrome_extension_test",
+  "version": "1.0.0",
+  "author": "jell",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm -rf dist && cpy manifest.json dist && cpy src/assets/* dist/assets",
+    "prebuild": "npm run clean",
+    "build:contentscript-background": "NODE_ENV=production webpack --config webpack.config.js",
+    "build:popup": "INLINE_RUNTIME_CHUNK=false npm run build --prefix src/popup && cd src/popup/build && cpy * /static/* ../../../dist/popup --parents",
+    "build": "npm-run-all build:*",
+    "prewatch": "npm run clean",
+    "watch:contentscript-background": "NODE_ENV=development webpack --config webpack.config.js -w",
+    "watch:popup": "npm run watch:build --prefix src/popup",
+    "watch": "npm-run-all --parallel watch:*",
+    "zip": "bestzip extension.zip dist/*"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.104",
+    "@types/node": "^13.13.2",
+    "awesome-typescript-loader": "^5.2.1",
+    "bestzip": "^2.1.5",
+    "cpy-cli": "^3.1.0",
+    "cra-build-watch": "^3.2.0",
+    "css-loader": "^3.5.3",
+    "mini-css-extract-plugin": "^0.9.0",
+    "node-sass": "^4.14.0",
+    "npm-run-all": "^4.1.5",
+    "sass-loader": "^8.0.2",
+    "ts-node": "^8.9.0",
+    "tslint": "^6.1.1",
+    "typescript": "^3.8.3",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "yarn-run-all": "^3.1.1"
+  }
+}

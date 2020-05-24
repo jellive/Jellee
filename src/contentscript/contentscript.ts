@@ -1,4 +1,4 @@
-import './contentscript.scss';
+import './contentscript.scss'
 
-const isThisContentscript = true;
-console.log('isThisContentscript', isThisContentscript);
+const isThisContentscript = true
+console.log('isThisContentscript', isThisContentscript)

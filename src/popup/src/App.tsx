@@ -6,8 +6,9 @@ import { addFilterAddr, delFilterAddr } from './apis'
 
 function App() {
 
+  const prevAddr = localStorage.getItem(FILTER_ADDR)
   const [addr, setAddr] = React.useState('')
-  const [filteredAddr, setFilteredAddr] = React.useState<Array<string>>(JSON.parse(localStorage.getItem(FILTER_ADDR) || ''))
+  const [filteredAddr, setFilteredAddr] = React.useState<Array<string | null>>(prevAddr ? JSON.parse(prevAddr) : [])
   const [delArr, setDelArr] = React.useState<Array<string>>([])
 
   const changeAddr = (e: React.ChangeEvent<HTMLInputElement>) => {

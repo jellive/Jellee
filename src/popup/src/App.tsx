@@ -2,23 +2,31 @@ import React from 'react';
 import './App.scss';
 import { FILTER_ADDR } from './models'
 import { addFilterAddr, delFilterAddr } from './apis'
+import { getChrome } from './utils';
 
 
 function App() {
 
-  const prevAddr = localStorage.getItem(FILTER_ADDR)
+  // TODO : localStorage를 chrome storage로 바꿀 것.
+
+  // const prevAddr = localStorage.getItem(FILTER_ADDR)
   const [addr, setAddr] = React.useState('')
-  const [filteredAddr, setFilteredAddr] = React.useState<Array<string | null>>(prevAddr ? JSON.parse(prevAddr) : [])
+  const [filteredAddr, setFilteredAddr] = React.useState<Array<string | null>>([])
   const [delArr, setDelArr] = React.useState<Array<string>>([])
+
+  getChrome(FILTER_ADDR).then(arr => {
+    setFilteredAddr(arr)
+  })
 
   const changeAddr = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddr(e.target.value)
   }
 
-  const addAddr = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const addAddr = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     addFilterAddr(`*://${addr}/*`)
     setAddr('')
-    setFilteredAddr(JSON.parse(localStorage.getItem(FILTER_ADDR) || ''))
+    setFilteredAddr(await getChrome(FILTER_ADDR))
+    // setFilteredAddr(JSON.parse(localStorage.getItem(FILTER_ADDR) || ''))
   }
 
   const checkDelArr = (event: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
@@ -33,7 +41,8 @@ function App() {
     tempArr.forEach(addr => delFilterAddr(addr))
     setAddr('')
     setDelArr([])
-    setFilteredAddr(JSON.parse(localStorage.getItem(FILTER_ADDR) || ''))
+    setFilteredAddr(prevAddr)
+    // setFilteredAddr(JSON.parse(localStorage.getItem(FILTER_ADDR) || ''))
   }
 
   return (
